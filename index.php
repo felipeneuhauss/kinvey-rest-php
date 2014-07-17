@@ -1,45 +1,42 @@
 <?php
 require_once 'KinveyREST.php';
-/**
- * Created by PhpStorm.
- * User: felipeneuhauss
- * Date: 17/07/14
- * Time: 16:14
- */
+require_once 'debug.php';
 
 /**
- * Retrieve
+ * Init class
  */
 
 use KinveyREST\KinveyREST;
 
-$kinveyRest = New
+$kinveyRest = New KinveyREST();
 
-$users = $kinveyRest->users(null, null, array('fields' => array('name', 'email', '_id')));
 /**
- * Obtem as vendas dos usuarios
+ * Get users
  */
-foreach ($users as &$user) {
-    $user->sales = $kinveyRest->retrieve('Sales',
-        '',
-        array('_acl.creator' => $user->_id),
-        array('sort' => array('_kmd.lmt' => -1),
-            'limit' => 1),
-        array(''));
+$users = $kinveyRest->users(null, null, array('fields' => array('name', 'email', '_id')));
 
-    $responses = array();
-    if (count($user->sales)) {
-        foreach ($user->sales as $sale) {
-            # verifica se fez venda a mais de 15 dias
-            $lastSaleDate = new \DateTime($sale->_kmd->lmt);
-            $today        = new \DateTime('now');
-            $diff         = $today->diff($lastSaleDate);
-            if ($diff->days >= 15) {
-                # Manda e-mail
-                $renderer = $this->getServiceLocator()->get('ViewRenderer');
-                $content = $renderer->partial('application/notification/notsale-email',  array('user' => $user));
-                $responses[] = $mandrill->send($user->email , $user->name,  'Izie - Há 15 dias que você não vende', $content);
-            }
-        }
-    }
-}
+/**
+ * Retrieve
+ */
+$data = $kinveyRest->retrieve('Albums',
+    '',
+    array(),
+    array('sort' => array('_kmd.lmt' => -1),
+        'limit' => 2),
+    array('pictures'), true/* Convert result to json */);
+
+
+/**
+ * Creating
+ */
+$today = new \DateTime('now');
+$kinveyDataFormat = $today->format(\DateTime::ATOM); // Kinvey data format
+
+$data = $kinveyRest->create("TodoList", array('task' => 'Create CRUD',
+                                              'done' => false,
+                                              'complexity' => 2,
+                                              'expirationAt' => $kinveyDataFormat,
+                                              '_acl' => array('creator' => '53a320d1c71d0b672103d014') /*If you need to save the register to a specified owner - user_id like 53a320d1c71d0b672103d014*/), true);
+
+
+

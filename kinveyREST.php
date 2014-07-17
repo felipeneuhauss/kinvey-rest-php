@@ -17,8 +17,12 @@ class KinveyREST
     protected $_consolePrefix   = '/appdata/';
     public $showUrl             = false;
 
-    public function __construct()
+    public function __construct($appKey = null, $masterSecret = null)
     {
+        if (!is_null($appKey) && !is_null($masterSecret)) {
+            $this->_appKey = $appKey;
+            $this->_masterSecret = $masterSecret;
+        }
     }
 
     public function setUserConsolePrefix()
@@ -96,7 +100,19 @@ class KinveyREST
         );
     }
 
-    public function retrieve($collectionName = '', $id = '', $query = array(), $modifiers = array(), $resolve = array(), $convertJson = true)
+    /**
+     * @param string $collectionName - Like 'Sales'
+     * @param string $id - Entity id
+     * @param array $query - like array('_acl.creator' => $user->_id, 'city' => 'New York')
+     * @param array $modifiers - like array('sort' => array('_kmd.lmt' => -1), 'limit' => 1)
+     * @param array $resolve - like array('customer') // it is to get an object relation
+     * @param bool $convertJson - Convert result to json?
+     * @return mixed|string
+     * @throws Exception
+     */
+    public function retrieve($collectionName = '', $id = '',
+                             $query = array(), $modifiers = array(),
+                             $resolve = array(), $convertJson = false)
     {
         if (($collectionName == null || $collectionName == '') && $this->getConsolePrefix() != '/user/') {
             throw new Exception('Collection not informed');
@@ -124,11 +140,11 @@ class KinveyREST
             return 'Curl error: ' . curl_error($ch);
         } else {
             curl_close($ch);
-            return $convertJson ? json_decode($output) : $output;
+            return !$convertJson ? json_decode($output) : $output;
         }
     }
 
-    public function update($collectionName = '', $id = '', $data = array())
+    public function update($collectionName = '', $id = '', $data = array(), $convertJson = false)
     {
         if ($collectionName == '') {
             throw new Exception('Collection not informed to update');
@@ -156,11 +172,19 @@ class KinveyREST
         } else {
             curl_close($ch);
             // something like "{"appPlan":{"_type":"KinveyRef","_collection":"AppPlans","_id":"52824b3d6ee8db1935002f2e"},"_id":"528e0b5f5681204e4e000005","_acl":{"creator":"kid_VVOYDIVQJ9"},"_kmd":{"lmt":"2013-11-22T19:40:23.389Z","ect":"2013-11-22T19:11:33.221Z"}}"
-            return json_decode($output);
+            return !$convertJson ? json_decode($output) : $output;
         }
     }
 
-    public function create($collectionName = '', $data = array())
+    /**
+     * Function that add a row into a collection
+     *
+     * @param string $collectionName
+     * @param array $data
+     * @return mixed|string
+     * @throws Exception
+     */
+    public function create($collectionName = '', $data = array(), $convertJson = false)
     {
         if ($collectionName == '') {
             throw new Exception('Collection not informed to create');
@@ -186,11 +210,11 @@ class KinveyREST
         } else {
             curl_close($ch);
             // something like "{"appPlan":{"_type":"KinveyRef","_collection":"AppPlans","_id":"52824b3d6ee8db1935002f2e"},"_id":"528e0b5f5681204e4e000005","_acl":{"creator":"kid_VVOYDIVQJ9"},"_kmd":{"lmt":"2013-11-22T19:40:23.389Z","ect":"2013-11-22T19:11:33.221Z"}}"
-            return json_decode($output);
+            return !$convertJson ? json_decode($output) : $output;
         }
     }
 
-    public function delete($collectionName = '', $id = '', $query = array())
+    public function delete($collectionName = '', $id = '', $query = array(), $convertJson = false)
     {
 
         if ($collectionName == '') {
@@ -220,10 +244,18 @@ class KinveyREST
             return 'Curl error: ' . curl_error($ch);
         } else {
             curl_close($ch);
-            return json_decode($output);
+            return !$convertJson ? json_decode($output) : $output;
         }
     }
 
+    /**
+     * Function that fetch users
+     *
+     * @param string $id - Specific id
+     * @param array $query - like array('_acl.creator' => $user->_id, 'city' => 'New York')
+     * @param array $modifiers - like array('sort' => array('_kmd.lmt' => -1), 'limit' => 1)
+     * @return mixed|string - JSON result
+     */
     public function users($id = '', $query = array(), $modifiers = array())
     {
 
