@@ -7,7 +7,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-namespace KinveyRest;
+namespace KinveyREST;
 
 class KinveyREST
 {
