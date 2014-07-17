@@ -214,6 +214,16 @@ class KinveyREST
         }
     }
 
+    /**
+     * Delete an item from an collection
+     *
+     * @param string $collectionName
+     * @param string $id
+     * @param array $query
+     * @param bool $convertJson
+     * @return mixed|string
+     * @throws Exception
+     */
     public function delete($collectionName = '', $id = '', $query = array(), $convertJson = false)
     {
 
@@ -285,6 +295,15 @@ class KinveyREST
         }
     }
 
+    /**
+     * Function that convert the array params to a query to a correct kinvey REST API structure
+     *
+     * @param string $url
+     * @param array $query
+     * @param array $modifiers
+     * @param array $resolve
+     * @return string
+     */
     protected function _buildQuery($url = '', $query = array(), $modifiers = array(), $resolve = array())
     {
         if (is_null($query)) {
@@ -331,6 +350,15 @@ class KinveyREST
         return $url;
     }
 
+    /**
+     * This is usefull to execute a custom end point
+     *
+     * @param string $customEndpoint
+     * @param array $data
+     * @param string $requestType
+     * @return mixed|string
+     * @throws Exception
+     */
     public function execute($customEndpoint = '', $data = array(), $requestType = 'POST')
     {
         if ($customEndpoint == '') {
@@ -359,14 +387,22 @@ class KinveyREST
         }
     }
 
+    /**
+     * Execute login
+     *
+     * @param $username
+     * @param $password
+     * @return mixed|string
+     * @throws Exception
+     */
     public function login($username, $password)
     {
         if ($username == '') {
-            throw new Exception('Informe seu usuário');
+            throw new Exception('Username is required');
         }
 
         if ($password == '') {
-            throw new Exception('Informe sua senha');
+            throw new Exception('Password is required');
         }
 
         $url = $this->getBaseUrl().'/user/'. $this->getAppKey(). '/login';
