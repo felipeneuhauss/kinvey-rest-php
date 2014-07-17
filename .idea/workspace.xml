@@ -44,7 +44,7 @@
       <file leaf-file-name="composer.json" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/composer.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="24" selection-start="96" selection-end="96" vertical-scroll-proportion="0.09933775" vertical-offset="0" max-vertical-offset="604">
+            <state line="1" column="19" selection-start="21" selection-end="21" vertical-scroll-proportion="0.024834437" vertical-offset="0" max-vertical-offset="604">
               <folding />
             </state>
           </provider>
@@ -393,7 +393,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/composer.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="24" selection-start="96" selection-end="96" vertical-scroll-proportion="0.09933775" vertical-offset="0" max-vertical-offset="604">
+        <state line="1" column="19" selection-start="21" selection-end="21" vertical-scroll-proportion="0.024834437" vertical-offset="0" max-vertical-offset="604">
           <folding />
         </state>
       </provider>
