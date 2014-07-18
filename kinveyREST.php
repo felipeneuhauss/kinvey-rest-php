@@ -10,8 +10,8 @@ namespace KinveyREST;
 
 class KinveyREST
 {
-    protected $_appKey          = 'kid_eTiEcN6MFO';
-    protected $_masterSecret    = '5ea7d50fe928441284ec112880493a4c';
+    protected $_appKey          = 'ki_EcN6MFO'; // Example of Key
+    protected $_masterSecret    = '5ea7d50f28441284880493a4c'; // Example of master key
     protected $_baseUrl         = 'https://baas.kinvey.com';
     protected $_consolePrefix   = '/appdata/';
     public $showUrl             = false;
